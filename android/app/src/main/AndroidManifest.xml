@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required by flutter_3d_controller (WebView-based model-viewer). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="pharmacy_3d_lab"
         android:name="${applicationName}"

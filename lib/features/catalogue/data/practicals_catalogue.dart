@@ -106,8 +106,8 @@ PracticalRegistry buildRegistry() {
       ),
       scene: SceneConfig(
         practicalId: StableIds.chlorideTestId,
-        rendererKind: 'temporary',
-        sceneAsset: 'scenes/chloride_bench',
+        rendererKind: 'model_viewer',
+        sceneAsset: 'assets/models/chloride_bench_placeholder.glb',
       ),
       reportSchema: ReportSchema(
         practicalId: StableIds.chlorideTestId,
@@ -217,8 +217,8 @@ PracticalRegistry buildRegistry() {
       ),
       scene: SceneConfig(
         practicalId: StableIds.benzocaineSynthesisId,
-        rendererKind: 'temporary',
-        sceneAsset: 'scenes/benzocaine_bench',
+        rendererKind: 'model_viewer',
+        sceneAsset: 'assets/models/benzocaine_bench_placeholder.glb',
       ),
       reportSchema: ReportSchema(
         practicalId: StableIds.benzocaineSynthesisId,
