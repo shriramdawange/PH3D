@@ -1,0 +1,18 @@
+name: web-debug
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+jobs:
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.47.1'
+      - run: flutter --version
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build web --profile --no-tree-shake-icons
