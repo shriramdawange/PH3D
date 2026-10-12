@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../features/catalogue/domain/practical_registry.dart';
 import '../features/laboratory/domain/lab_session.dart';
 import 'lab_launcher.dart';
@@ -35,41 +36,54 @@ class PharmacyLabApp extends StatelessWidget {
           switch (settings.name) {
             case '/':
               return MaterialPageRoute(
-                  builder: (_) => CatalogueScreen(registry: registry));
+                builder: (_) => CatalogueScreen(registry: registry),
+              );
             case '/overview':
               final id = settings.arguments as String;
               return MaterialPageRoute(
-                  builder: (_) => PracticalOverviewScreen(
-                      registry: registry,
-                      launcher: launcher,
-                      practicalId: id));
+                builder: (_) => PracticalOverviewScreen(
+                  registry: registry,
+                  launcher: launcher,
+                  practicalId: id,
+                ),
+              );
             case '/mcq':
               final id = settings.arguments as String;
               return MaterialPageRoute(
-                  builder: (_) => McqScreen(
-                      registry: registry,
-                      sessionManager: sessionManager,
-                      practicalId: id));
+                builder: (_) => McqScreen(
+                  registry: registry,
+                  sessionManager: sessionManager,
+                  practicalId: id,
+                ),
+              );
             case '/lab':
               final id = settings.arguments as String;
               return MaterialPageRoute(
-                  builder: (_) => LabShellScreen(
-                      registry: registry,
-                      sessionManager: sessionManager,
-                      practicalId: id));
+                builder: (_) => LabShellScreen(
+                  registry: registry,
+                  sessionManager: sessionManager,
+                  practicalId: id,
+                ),
+              );
             case '/report':
               final id = settings.arguments as String;
               return MaterialPageRoute(
-                  builder: (_) => ReportScreen(
-                      registry: registry,
-                      sessionManager: sessionManager,
-                      practicalId: id));
+                builder: (_) => ReportScreen(
+                  registry: registry,
+                  sessionManager: sessionManager,
+                  practicalId: id,
+                ),
+              );
             default:
               return MaterialPageRoute(
-                  builder: (_) => Scaffold(
-                      body: Center(
-                          child: Text(
-                              'Unknown route ${settings.name} (explicit failure, no silent fallback).'))));
+                builder: (_) => Scaffold(
+                  body: Center(
+                    child: Text(
+                      'Unknown route ${settings.name} (explicit failure, no silent fallback).',
+                    ),
+                  ),
+                ),
+              );
           }
         },
       ),

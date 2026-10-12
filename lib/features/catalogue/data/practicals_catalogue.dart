@@ -57,15 +57,20 @@ PracticalRegistry buildRegistry() {
       ),
       materials: const [
         MaterialDefinition(
-            id: 'cl_sample', label: 'Test sample solution', allowedUnits: ['mL']),
+          id: 'cl_sample',
+          label: 'Test sample solution',
+          allowedUnits: ['mL'],
+        ),
         MaterialDefinition(
-            id: 'cl_std_chloride',
-            label: 'Standard chloride solution',
-            allowedUnits: ['mL']),
+          id: 'cl_std_chloride',
+          label: 'Standard chloride solution',
+          allowedUnits: ['mL'],
+        ),
         MaterialDefinition(
-            id: 'cl_silver_nitrate',
-            label: 'Silver nitrate reagent',
-            allowedUnits: ['mL', 'drops']),
+          id: 'cl_silver_nitrate',
+          label: 'Silver nitrate reagent',
+          allowedUnits: ['mL', 'drops'],
+        ),
       ],
       equipment: const [
         EquipmentDefinition(id: 'cl_nessler_a', label: 'Nessler cylinder A'),
@@ -73,42 +78,46 @@ PracticalRegistry buildRegistry() {
       ],
       steps: const [
         ProcedureStep(
-            id: 'cl_s1',
-            order: 1,
-            title: 'Prepare sample',
-            instruction:
-                'Add sample solution to Nessler cylinder A. REQUIRES_EDUCATOR_REVIEW: exact volume.'),
+          id: 'cl_s1',
+          order: 1,
+          title: 'Prepare sample',
+          instruction: 'Add sample solution to Nessler cylinder A. REQUIRES_EDUCATOR_REVIEW: exact volume.',
+        ),
         ProcedureStep(
-            id: 'cl_s2',
-            order: 2,
-            title: 'Prepare standard',
-            instruction:
-                'Add standard chloride solution to Nessler cylinder B. REQUIRES_EDUCATOR_REVIEW: exact volume.',
-            prerequisites: ['cl_s1']),
+          id: 'cl_s2',
+          order: 2,
+          title: 'Prepare standard',
+          instruction: 'Add standard chloride solution to Nessler cylinder B. REQUIRES_EDUCATOR_REVIEW: exact volume.',
+          prerequisites: ['cl_s1'],
+        ),
         ProcedureStep(
-            id: 'cl_s3',
-            order: 3,
-            title: 'Add reagent and compare',
-            instruction:
-                'Add silver nitrate reagent to both cylinders and compare opalescence (simulated).',
-            requiredMaterialIds: ['cl_silver_nitrate'],
-            requiredEquipmentIds: ['cl_nessler_a', 'cl_nessler_b'],
-            prerequisites: ['cl_s1', 'cl_s2']),
+          id: 'cl_s3',
+          order: 3,
+          title: 'Add reagent and compare',
+          instruction: 'Add silver nitrate reagent to both cylinders and compare opalescence (simulated).',
+          requiredMaterialIds: ['cl_silver_nitrate'],
+          requiredEquipmentIds: ['cl_nessler_a', 'cl_nessler_b'],
+          prerequisites: ['cl_s1', 'cl_s2'],
+        ),
       ],
       simulation: SimulationConfig(
-          practicalId: StableIds.chlorideTestId, kind: 'limit_test'),
+        practicalId: StableIds.chlorideTestId,
+        kind: 'limit_test',
+      ),
       scene: SceneConfig(
-          practicalId: StableIds.chlorideTestId,
-          rendererKind: 'temporary',
-          sceneAsset: 'scenes/chloride_bench'),
+        practicalId: StableIds.chlorideTestId,
+        rendererKind: 'temporary',
+        sceneAsset: 'scenes/chloride_bench',
+      ),
       reportSchema: ReportSchema(
-          practicalId: StableIds.chlorideTestId,
-          fields: const [
-            'aim',
-            'principle',
-            'sample_vs_standard_observation',
-            'inference',
-          ]),
+        practicalId: StableIds.chlorideTestId,
+        fields: const [
+          'aim',
+          'principle',
+          'sample_vs_standard_observation',
+          'inference',
+        ],
+      ),
       reviewStatus: ContentReviewStatus.requiresEducatorReview,
     ),
     PracticalDefinition(
@@ -142,7 +151,8 @@ PracticalRegistry buildRegistry() {
               McqOption(id: 'bz_q1_c', text: 'Fermentation'),
             ],
             correctOptionId: 'bz_q1_a',
-            explanation: 'Benzocaine is formed via esterification (simulated lab).',
+            explanation:
+                'Benzocaine is formed via esterification (simulated lab).',
           ),
           McqQuestion(
             id: 'bz_q2',
@@ -159,11 +169,20 @@ PracticalRegistry buildRegistry() {
       ),
       materials: const [
         MaterialDefinition(
-            id: 'bz_paba', label: 'p-Aminobenzoic acid (PABA)', allowedUnits: ['g']),
+          id: 'bz_paba',
+          label: 'p-Aminobenzoic acid (PABA)',
+          allowedUnits: ['g'],
+        ),
         MaterialDefinition(
-            id: 'bz_ethanol', label: 'Ethanol', allowedUnits: ['mL']),
+          id: 'bz_ethanol',
+          label: 'Ethanol',
+          allowedUnits: ['mL'],
+        ),
         MaterialDefinition(
-            id: 'bz_acid', label: 'Acid catalyst', allowedUnits: ['mL', 'drops']),
+          id: 'bz_acid',
+          label: 'Acid catalyst',
+          allowedUnits: ['mL', 'drops'],
+        ),
       ],
       equipment: const [
         EquipmentDefinition(id: 'bz_reflux', label: 'Reflux assembly'),
@@ -171,41 +190,45 @@ PracticalRegistry buildRegistry() {
       ],
       steps: const [
         ProcedureStep(
-            id: 'bz_s1',
-            order: 1,
-            title: 'Charge reactants',
-            instruction:
-                'Add PABA and ethanol to the flask. REQUIRES_EDUCATOR_REVIEW: exact quantities.'),
+          id: 'bz_s1',
+          order: 1,
+          title: 'Charge reactants',
+          instruction: 'Add PABA and ethanol to the flask. REQUIRES_EDUCATOR_REVIEW: exact quantities.',
+        ),
         ProcedureStep(
-            id: 'bz_s2',
-            order: 2,
-            title: 'Reflux',
-            instruction:
-                'Heat under reflux (simulated). REQUIRES_EDUCATOR_REVIEW: time and temperature.',
-            requiredEquipmentIds: ['bz_reflux'],
-            prerequisites: ['bz_s1']),
+          id: 'bz_s2',
+          order: 2,
+          title: 'Reflux',
+          instruction: 'Heat under reflux (simulated). REQUIRES_EDUCATOR_REVIEW: time and temperature.',
+          requiredEquipmentIds: ['bz_reflux'],
+          prerequisites: ['bz_s1'],
+        ),
         ProcedureStep(
-            id: 'bz_s3',
-            order: 3,
-            title: 'Isolate product',
-            instruction:
-                'Neutralise, filter and dry product (simulated). Record simulated yield.',
-            prerequisites: ['bz_s1', 'bz_s2']),
+          id: 'bz_s3',
+          order: 3,
+          title: 'Isolate product',
+          instruction: 'Neutralise, filter and dry product (simulated). Record simulated yield.',
+          prerequisites: ['bz_s1', 'bz_s2'],
+        ),
       ],
       simulation: SimulationConfig(
-          practicalId: StableIds.benzocaineSynthesisId, kind: 'synthesis'),
+        practicalId: StableIds.benzocaineSynthesisId,
+        kind: 'synthesis',
+      ),
       scene: SceneConfig(
-          practicalId: StableIds.benzocaineSynthesisId,
-          rendererKind: 'temporary',
-          sceneAsset: 'scenes/benzocaine_bench'),
+        practicalId: StableIds.benzocaineSynthesisId,
+        rendererKind: 'temporary',
+        sceneAsset: 'scenes/benzocaine_bench',
+      ),
       reportSchema: ReportSchema(
-          practicalId: StableIds.benzocaineSynthesisId,
-          fields: const [
-            'aim',
-            'reaction_scheme',
-            'simulated_yield',
-            'simulated_melting_point',
-          ]),
+        practicalId: StableIds.benzocaineSynthesisId,
+        fields: const [
+          'aim',
+          'reaction_scheme',
+          'simulated_yield',
+          'simulated_melting_point',
+        ],
+      ),
       reviewStatus: ContentReviewStatus.requiresEducatorReview,
     ),
   ]);

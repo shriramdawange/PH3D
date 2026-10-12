@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../catalogue/domain/practical_definition.dart';
 import '../../laboratory/domain/lab_session.dart';
 
@@ -46,7 +47,8 @@ class TemporaryRendererAdapter extends RendererAdapter {
           Text('Practical: ${definition.id}'),
           const SizedBox(height: 8),
           const Text(
-              'Tap equipment below to simulate selection (typed actions):'),
+            'Tap equipment below to simulate selection (typed actions):',
+          ),
           Wrap(
             spacing: 8,
             children: [
@@ -55,10 +57,9 @@ class TemporaryRendererAdapter extends RendererAdapter {
                   onTap: () => onEquipmentTap(e.id),
                   child: Chip(
                     label: Text(e.label),
-                    backgroundColor:
-                        session.selectedEquipmentIds.contains(e.id)
-                            ? Colors.green.shade100
-                            : null,
+                    backgroundColor: session.selectedEquipmentIds.contains(e.id)
+                        ? Colors.green.shade100
+                        : null,
                   ),
                 ),
             ],
@@ -82,7 +83,8 @@ class RendererRegistry {
     // in config is surfaced as an explicit error, never a silent fallback.
     if (definition.scene.rendererKind != 'temporary') {
       throw UnsupportedError(
-          'Renderer "${definition.scene.rendererKind}" for ${definition.id} is not implemented.');
+        'Renderer "${definition.scene.rendererKind}" for ${definition.id} is not implemented.',
+      );
     }
     return TemporaryRendererAdapter(
       definition: definition,

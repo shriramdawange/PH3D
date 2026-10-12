@@ -29,7 +29,9 @@ class PracticalRegistry {
         return c != 0 ? c : a.id.compareTo(b.id);
       });
     return PracticalRegistry._(
-        List.unmodifiable(ordered), Map.unmodifiable(byId));
+      List.unmodifiable(ordered),
+      Map.unmodifiable(byId),
+    );
   }
 
   List<PracticalDefinition> get all => _defs;

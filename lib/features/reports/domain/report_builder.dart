@@ -19,10 +19,11 @@ class ReportSnapshot {
 }
 
 class ReportBuilder {
-  static ReportSnapshot build(
-      PracticalDefinition def, LabSession session) {
-    assert(def.id == session.practicalId,
-        'Report must use the active session\u2019s own definition');
+  static ReportSnapshot build(PracticalDefinition def, LabSession session) {
+    assert(
+      def.id == session.practicalId,
+      'Report must use the active session\u2019s own definition',
+    );
     final sections = <String, String>{};
     for (final f in def.reportSchema.fields) {
       sections[f] = _fieldText(def, session, f);
@@ -37,7 +38,10 @@ class ReportBuilder {
   }
 
   static String _fieldText(
-      PracticalDefinition def, LabSession session, String field) {
+    PracticalDefinition def,
+    LabSession session,
+    String field,
+  ) {
     switch (field) {
       case 'aim':
         return def.description;

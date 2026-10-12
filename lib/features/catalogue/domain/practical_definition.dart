@@ -146,8 +146,7 @@ class PracticalDefinition {
   /// Returns a list of human-readable validation errors (empty = valid).
   List<String> validate() {
     final errors = <String>[];
-    void err(String field, String msg) =>
-        errors.add('[$id] $field: $msg');
+    void err(String field, String msg) => errors.add('[$id] $field: $msg');
     if (id.isEmpty) err('id', 'must be non-empty');
     if (contentVersion.isEmpty) err('contentVersion', 'must be non-empty');
     if (title.isEmpty) err('title', 'must be non-empty');
@@ -158,8 +157,10 @@ class PracticalDefinition {
       err('learningObjectives', 'must be non-empty');
     }
     if (assessment.practicalId != id) {
-      err('assessment.practicalId',
-          'mismatch ${assessment.practicalId} != $id');
+      err(
+        'assessment.practicalId',
+        'mismatch ${assessment.practicalId} != $id',
+      );
     }
     if (simulation.practicalId != id) {
       err('simulation.practicalId', 'mismatch');

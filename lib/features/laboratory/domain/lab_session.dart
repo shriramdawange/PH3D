@@ -55,8 +55,7 @@ class LabSession {
       completedStepIds: completedStepIds ?? this.completedStepIds,
       quantities: quantities ?? this.quantities,
       quantityUnits: quantityUnits ?? this.quantityUnits,
-      selectedEquipmentIds:
-          selectedEquipmentIds ?? this.selectedEquipmentIds,
+      selectedEquipmentIds: selectedEquipmentIds ?? this.selectedEquipmentIds,
       observations: observations ?? this.observations,
       warnings: warnings ?? this.warnings,
       completed: completed ?? this.completed,
@@ -84,8 +83,10 @@ class LabSessionManager extends ChangeNotifier {
   }
 
   void update(LabSession next) {
-    assert(next.practicalId == _active?.practicalId,
-        'Must not swap practical identity of a session');
+    assert(
+      next.practicalId == _active?.practicalId,
+      'Must not swap practical identity of a session',
+    );
     _active = next;
     notifyListeners();
   }

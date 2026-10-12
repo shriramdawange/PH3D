@@ -9,7 +9,11 @@ import 'package:pharmacy_3d_lab/features/reports/domain/report_builder.dart';
 import 'package:pharmacy_3d_lab/features/simulation/domain/simulation_engine.dart';
 import 'package:pharmacy_3d_lab/core/ids.dart';
 
-PracticalDefinition cloneWithId(PracticalDefinition src, String newId, int order) {
+PracticalDefinition cloneWithId(
+  PracticalDefinition src,
+  String newId,
+  int order,
+) {
   return PracticalDefinition(
     id: newId,
     contentVersion: src.contentVersion,
@@ -32,11 +36,14 @@ PracticalDefinition cloneWithId(PracticalDefinition src, String newId, int order
     steps: src.steps,
     simulation: SimulationConfig(practicalId: newId, kind: src.simulation.kind),
     scene: SceneConfig(
-        practicalId: newId,
-        rendererKind: src.scene.rendererKind,
-        sceneAsset: 'scenes/extra'),
-    reportSchema:
-        ReportSchema(practicalId: newId, fields: src.reportSchema.fields),
+      practicalId: newId,
+      rendererKind: src.scene.rendererKind,
+      sceneAsset: 'scenes/extra',
+    ),
+    reportSchema: ReportSchema(
+      practicalId: newId,
+      fields: src.reportSchema.fields,
+    ),
     reviewStatus: src.reviewStatus,
   );
 }
@@ -51,21 +58,25 @@ void main() {
 
   test('duplicate IDs throw', () {
     final r = buildRegistry();
-    expect(() => PracticalRegistry([...r.all, ...r.all]),
-        throwsA(isA<RegistryValidationException>()));
+    expect(
+      () => PracticalRegistry([...r.all, ...r.all]),
+      throwsA(isA<RegistryValidationException>()),
+    );
   });
 
   test('unknown ID throws explicit failure', () {
     final r = buildRegistry();
-    expect(() => r.resolve('nope.missing'),
-        throwsA(isA<UnknownPracticalException>()));
+    expect(
+      () => r.resolve('nope.missing'),
+      throwsA(isA<UnknownPracticalException>()),
+    );
   });
 
   test('assessment scoring + empty assessment', () {
     final r = buildRegistry();
     final def = r.resolve(StableIds.chlorideTestId);
     final ok = {
-      for (final q in def.assessment.questions) q.id: q.correctOptionId
+      for (final q in def.assessment.questions) q.id: q.correctOptionId,
     };
     final pass = AssessmentEngine.evaluate(def.assessment, ok);
     expect(pass.passed, true);
@@ -89,7 +100,10 @@ void main() {
     final r = buildRegistry();
     final def = r.resolve(StableIds.chlorideTestId);
     var s = LabSession(
-        sessionId: 't', practicalId: def.id, startedAt: DateTime.now());
+      sessionId: 't',
+      practicalId: def.id,
+      startedAt: DateTime.now(),
+    );
     final locked = ProcedureEngine.completeStep(def, s, 'cl_s3');
     expect(locked.accepted, false);
     s = s.copyWith(completedStepIds: {'cl_s1', 'cl_s2'});
@@ -101,7 +115,10 @@ void main() {
     final r = buildRegistry();
     final def = r.resolve(StableIds.chlorideTestId);
     final s = LabSession(
-        sessionId: 't', practicalId: def.id, startedAt: DateTime.now());
+      sessionId: 't',
+      practicalId: def.id,
+      startedAt: DateTime.now(),
+    );
     final a = SimulationEngine.observationsFor(def, s);
     final b = SimulationEngine.observationsFor(def, s);
     expect(a.join(), b.join());
@@ -111,10 +128,11 @@ void main() {
     final r = buildRegistry();
     final cl = r.resolve(StableIds.chlorideTestId);
     final s = LabSession(
-        sessionId: 's1',
-        practicalId: cl.id,
-        startedAt: DateTime.now(),
-        observations: const ['x']);
+      sessionId: 's1',
+      practicalId: cl.id,
+      startedAt: DateTime.now(),
+      observations: const ['x'],
+    );
     final rep = ReportBuilder.build(cl, s);
     expect(rep.practicalId, cl.id);
     expect(rep.sections.containsKey('sample_vs_standard_observation'), true);
@@ -128,7 +146,10 @@ void main() {
     final bz = r.resolve(StableIds.benzocaineSynthesisId);
 
     var clSession = LabSession(
-        sessionId: 'cl1', practicalId: cl.id, startedAt: DateTime.now());
+      sessionId: 'cl1',
+      practicalId: cl.id,
+      startedAt: DateTime.now(),
+    );
     clSession = clSession.copyWith(
       quantities: {'cl_sample': 5.0},
       quantityUnits: {'cl_sample': 'mL'},
@@ -138,7 +159,10 @@ void main() {
     );
 
     var bzSession = LabSession(
-        sessionId: 'bz1', practicalId: bz.id, startedAt: DateTime.now());
+      sessionId: 'bz1',
+      practicalId: bz.id,
+      startedAt: DateTime.now(),
+    );
     expect(bzSession.quantities.containsKey('cl_sample'), false);
     expect(bzSession.selectedEquipmentIds.contains('cl_nessler_a'), false);
     expect(bzSession.completedStepIds.contains('cl_s1'), false);
@@ -150,18 +174,21 @@ void main() {
       completedStepIds: {'bz_s1'},
     );
     var clSession2 = LabSession(
-        sessionId: 'cl2', practicalId: cl.id, startedAt: DateTime.now());
+      sessionId: 'cl2',
+      practicalId: cl.id,
+      startedAt: DateTime.now(),
+    );
     expect(clSession2.quantities.containsKey('bz_paba'), false);
     expect(clSession2.selectedEquipmentIds.contains('bz_reflux'), false);
 
     final clRep = ReportBuilder.build(cl, clSession);
     final bzRep = ReportBuilder.build(bz, bzSession);
     expect(
-        clRep.sections.keys.toSet().intersection(bzRep.sections.keys.toSet()),
-        contains('aim'));
+      clRep.sections.keys.toSet().intersection(bzRep.sections.keys.toSet()),
+      contains('aim'),
+    );
     expect(clRep.sections.containsKey('simulated_yield'), false);
-    expect(
-        bzRep.sections.containsKey('sample_vs_standard_observation'), false);
+    expect(bzRep.sections.containsKey('sample_vs_standard_observation'), false);
   });
 
   test('adding a third practical does not reorder existing', () {

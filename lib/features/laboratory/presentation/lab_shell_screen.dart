@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../catalogue/domain/practical_registry.dart';
 import '../../laboratory/domain/lab_session.dart';
 import '../../procedure/domain/procedure_engine.dart';
@@ -12,11 +13,12 @@ class LabShellScreen extends StatelessWidget {
   final PracticalRegistry registry;
   final LabSessionManager sessionManager;
   final String practicalId;
-  const LabShellScreen(
-      {super.key,
-      required this.registry,
-      required this.sessionManager,
-      required this.practicalId});
+  const LabShellScreen({
+    super.key,
+    required this.registry,
+    required this.sessionManager,
+    required this.practicalId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +36,14 @@ class LabShellScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                      'No active session for "$practicalId". Complete the MCQ gate first.'),
+                    'No active session for "$practicalId". Complete the MCQ gate first.',
+                  ),
                   FilledButton(
-                    onPressed: () => Navigator.pushNamed(context, '/mcq',
-                        arguments: practicalId),
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      '/mcq',
+                      arguments: practicalId,
+                    ),
                     child: const Text('Go to MCQ gate'),
                   ),
                 ],
@@ -54,8 +60,11 @@ class LabShellScreen extends StatelessWidget {
                 children: [
                   const Text('MCQ gate not passed for this practical.'),
                   FilledButton(
-                    onPressed: () => Navigator.pushNamed(context, '/mcq',
-                        arguments: practicalId),
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      '/mcq',
+                      arguments: practicalId,
+                    ),
                     child: const Text('Go to MCQ gate'),
                   ),
                 ],
@@ -64,8 +73,7 @@ class LabShellScreen extends StatelessWidget {
           );
         }
 
-        final observations =
-            SimulationEngine.observationsFor(def, session);
+        final observations = SimulationEngine.observationsFor(def, session);
 
         return Scaffold(
           appBar: AppBar(
@@ -74,33 +82,36 @@ class LabShellScreen extends StatelessWidget {
               IconButton(
                 tooltip: 'Reset session',
                 icon: const Icon(Icons.refresh),
-                onPressed: () =>
-                    sessionManager.createSession(practicalId),
+                onPressed: () => sessionManager.createSession(practicalId),
               ),
             ],
           ),
-          body: LayoutBuilder(builder: (context, constraints) {
-            final wide = constraints.maxWidth > 800;
-            final left = _LabMainPanel(
-                registry: registry,
-                sessionManager: sessionManager,
-                practicalId: practicalId);
-            final right = _LabSidePanel(
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              final wide = constraints.maxWidth > 800;
+              final left = _LabMainPanel(
                 registry: registry,
                 sessionManager: sessionManager,
                 practicalId: practicalId,
-                observations: observations);
-            if (wide) {
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(flex: 3, child: left),
-                  Expanded(flex: 2, child: right),
-                ],
               );
-            }
-            return ListView(children: [left, right]);
-          }),
+              final right = _LabSidePanel(
+                registry: registry,
+                sessionManager: sessionManager,
+                practicalId: practicalId,
+                observations: observations,
+              );
+              if (wide) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 3, child: left),
+                    Expanded(flex: 2, child: right),
+                  ],
+                );
+              }
+              return ListView(children: [left, right]);
+            },
+          ),
         );
       },
     );
@@ -111,10 +122,11 @@ class _LabMainPanel extends StatelessWidget {
   final PracticalRegistry registry;
   final LabSessionManager sessionManager;
   final String practicalId;
-  const _LabMainPanel(
-      {required this.registry,
-      required this.sessionManager,
-      required this.practicalId});
+  const _LabMainPanel({
+    required this.registry,
+    required this.sessionManager,
+    required this.practicalId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -132,17 +144,18 @@ class _LabMainPanel extends StatelessWidget {
           } else {
             next.add(eq);
           }
-          sessionManager.update(
-              session.copyWith(selectedEquipmentIds: next));
+          sessionManager.update(session.copyWith(selectedEquipmentIds: next));
         },
       );
     } catch (e) {
       return Padding(
         padding: const EdgeInsets.all(16),
         child: Card(
-            child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text('Scene failed to load: $e'))),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text('Scene failed to load: $e'),
+          ),
+        ),
       );
     }
     return Padding(
@@ -152,8 +165,10 @@ class _LabMainPanel extends StatelessWidget {
         children: [
           scene,
           const SizedBox(height: 12),
-          const Text('Procedure',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            'Procedure',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           for (final step in def.steps)
             Card(
               child: ListTile(
@@ -163,31 +178,38 @@ class _LabMainPanel extends StatelessWidget {
                     ? const Icon(Icons.check_circle, color: Colors.green)
                     : FilledButton.tonal(
                         onPressed: () {
-                          final r =
-                              ProcedureEngine.completeStep(def, session, step.id);
+                          final r = ProcedureEngine.completeStep(
+                            def,
+                            session,
+                            step.id,
+                          );
                           if (r.accepted) {
                             final done = Set<String>.from(
-                                session.completedStepIds)
-                              ..add(step.id);
-                            final completed =
-                                done.length == def.steps.length;
-                            sessionManager.update(session.copyWith(
-                              completedStepIds: done,
-                              currentStepId: step.id,
-                              observations:
-                                  List<String>.from(session.observations)
-                                    ..add(
-                                        'SIMULATED: ${step.title} done.'),
-                              completed: completed,
-                            ));
+                              session.completedStepIds,
+                            )..add(step.id);
+                            final completed = done.length == def.steps.length;
+                            sessionManager.update(
+                              session.copyWith(
+                                completedStepIds: done,
+                                currentStepId: step.id,
+                                observations: List<String>.from(
+                                  session.observations,
+                                )..add('SIMULATED: ${step.title} done.'),
+                                completed: completed,
+                              ),
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        '${r.message} (${r.code})')));
-                            sessionManager.update(session.copyWith(
+                              SnackBar(
+                                content: Text('${r.message} (${r.code})'),
+                              ),
+                            );
+                            sessionManager.update(
+                              session.copyWith(
                                 warnings: List<String>.from(session.warnings)
-                                  ..add('${r.code}: ${r.message}')));
+                                  ..add('${r.code}: ${r.message}'),
+                              ),
+                            );
                           }
                         },
                         child: const Text('Complete'),
@@ -205,11 +227,12 @@ class _LabSidePanel extends StatefulWidget {
   final LabSessionManager sessionManager;
   final String practicalId;
   final List<String> observations;
-  const _LabSidePanel(
-      {required this.registry,
-      required this.sessionManager,
-      required this.practicalId,
-      required this.observations});
+  const _LabSidePanel({
+    required this.registry,
+    required this.sessionManager,
+    required this.practicalId,
+    required this.observations,
+  });
 
   @override
   State<_LabSidePanel> createState() => _LabSidePanelState();
@@ -228,8 +251,10 @@ class _LabSidePanelState extends State<_LabSidePanel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Materials & quantities (explicit units)',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            'Materials & quantities (explicit units)',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           for (final m in def.materials)
             Card(
               child: Padding(
@@ -243,11 +268,12 @@ class _LabSidePanelState extends State<_LabSidePanel> {
                         Expanded(
                           child: TextField(
                             decoration: const InputDecoration(
-                                labelText: 'Quantity',
-                                hintText: 'e.g. 5'),
-                            keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    decimal: true),
+                              labelText: 'Quantity',
+                              hintText: 'e.g. 5',
+                            ),
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
                             onChanged: (v) => qtyText[m.id] = v,
                           ),
                         ),
@@ -256,41 +282,44 @@ class _LabSidePanelState extends State<_LabSidePanel> {
                           value: unitSel[m.id] ?? m.allowedUnits.first,
                           items: [
                             for (final u in m.allowedUnits)
-                              DropdownMenuItem(
-                                  value: u, child: Text(u)),
+                              DropdownMenuItem(value: u, child: Text(u)),
                           ],
-                          onChanged: (v) =>
-                              setState(() => unitSel[m.id] = v!),
+                          onChanged: (v) => setState(() => unitSel[m.id] = v!),
                         ),
                         TextButton(
                           onPressed: () {
-                            final unit =
-                                unitSel[m.id] ?? m.allowedUnits.first;
-                            final val = double.tryParse(
-                                qtyText[m.id] ?? '');
+                            final unit = unitSel[m.id] ?? m.allowedUnits.first;
+                            final val = double.tryParse(qtyText[m.id] ?? '');
                             if (val == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'Enter a numeric quantity.')));
+                                const SnackBar(
+                                  content: Text('Enter a numeric quantity.'),
+                                ),
+                              );
                               return;
                             }
-                            final r =
-                                ProcedureEngine.setQuantity(def, m.id, val, unit);
+                            final r = ProcedureEngine.setQuantity(
+                              def,
+                              m.id,
+                              val,
+                              unit,
+                            );
                             if (!r.accepted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(r.message)));
+                                SnackBar(content: Text(r.message)),
+                              );
                               return;
                             }
-                            widget.sessionManager.update(session.copyWith(
-                              quantities: Map<String, double>.from(
-                                  session.quantities)
-                                ..[m.id] = val,
-                              quantityUnits:
-                                  Map<String, String>.from(
-                                      session.quantityUnits)
-                                    ..[m.id] = unit,
-                            ));
+                            widget.sessionManager.update(
+                              session.copyWith(
+                                quantities: Map<String, double>.from(
+                                  session.quantities,
+                                )..[m.id] = val,
+                                quantityUnits: Map<String, String>.from(
+                                  session.quantityUnits,
+                                )..[m.id] = unit,
+                              ),
+                            );
                           },
                           child: const Text('Set'),
                         ),
@@ -298,27 +327,36 @@ class _LabSidePanelState extends State<_LabSidePanel> {
                     ),
                     if (session.quantities.containsKey(m.id))
                       Text(
-                          'Set: ${session.quantities[m.id]} ${session.quantityUnits[m.id]}'),
+                        'Set: ${session.quantities[m.id]} ${session.quantityUnits[m.id]}',
+                      ),
                   ],
                 ),
               ),
             ),
           const SizedBox(height: 12),
-          const Text('Observations / results (simulated)',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            'Observations / results (simulated)',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           Card(
-              child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (final o in widget.observations) Text('• $o'),
-                        for (final o in session.observations) Text('• $o'),
-                      ]))),
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final o in widget.observations) Text('• $o'),
+                  for (final o in session.observations) Text('• $o'),
+                ],
+              ),
+            ),
+          ),
           const SizedBox(height: 12),
           FilledButton(
-            onPressed: () => Navigator.pushNamed(context, '/report',
-                arguments: widget.practicalId),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              '/report',
+              arguments: widget.practicalId,
+            ),
             child: const Text('Preview practical report'),
           ),
         ],
